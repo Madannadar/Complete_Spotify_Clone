@@ -18,7 +18,7 @@ const AddSong = () => {
         e.preventDefault();
         setLoading(true);
         try {
-            const formData = new formData();
+            const formData = new FormData();
 
             formData.append('name',name);
             formData.append('desc',desc);
@@ -26,8 +26,10 @@ const AddSong = () => {
             formData.append('audio',song);
             formData.append('album',album);
 
+            console.log("formData",formData);
+            
             const response = await axios.post(`${url}/api/song/add`,formData)
-            // console.log(response);
+            console.log(response);
             
             if(response.data.success) {
                 toast.success('Song added successfully');
@@ -41,7 +43,11 @@ const AddSong = () => {
                 toast.error('kuch to gadbar h daya in addsong')
             }
         } catch (error) {
-            toast.error('Error in addsong admin site')
+            console.log(name, desc, image, song, album);
+            
+            toast.error('Error in add song admin site')
+            console.log(error);
+            
         }
         setLoading(false)
     }
@@ -72,7 +78,7 @@ const AddSong = () => {
         </div>
         <div className="flex flex-col gap-2.5">
             <p>Song Name</p>
-            <input onChange={ (e) => setName(e.target.value)} value={name} className='bg-transparent outline-green-600 border-2 border-gray-400 p-2.5 w-[max(40vw,250px)]'placeholder='Type here' type="text"  required/>
+            <input onChange={(e) => setName(e.target.value)} value={name} className='bg-transparent outline-green-600 border-2 border-gray-400 p-2.5 w-[max(40vw,250px)]'placeholder='Type here' type="text"  required/>
         </div>
 
         <div className="flex flex-col gap-2.5">
@@ -83,6 +89,7 @@ const AddSong = () => {
             <p>Album</p>
             <select onChange={(e) => setAlbum(e.target.value)} defaultValue={album} className='bg-transparent outline-green-600 border-2 border-gray-400 p-2.5 w-[150px]'>
                 <option value="none">None</option>
+                <option value="die with a smile">die with a smile</option>
             </select>
         </div>
         <button type='submit' className='text-base bg-black text-white py-2.5 px-14 cursor-pointer'>Add</button>
