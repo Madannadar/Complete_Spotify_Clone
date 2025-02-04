@@ -9,7 +9,7 @@ const AddAlbum = () => {
   const [image, setImage] = useState(false);
   const [name, setName] = useState('');
   const [desc, setDesc] = useState('');
-  const [bgColour, setBgColour] = useState('none');
+  const [bgColour, setBgColour] = useState('#121212');
   const [loading, setLoading] = useState(false);
 
 

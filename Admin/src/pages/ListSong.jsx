@@ -9,7 +9,7 @@ const ListSong = () => {
   const fetchSongs = async () => {
     try {
       const response = await axios.get(`${url}/api/song/list`);
-      console.log(response.data);
+      // console.log(response.data);
 
       if (response.data.success) {
         setData(response.data.songs);
