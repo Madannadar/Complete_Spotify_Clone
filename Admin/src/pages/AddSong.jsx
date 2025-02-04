@@ -26,10 +26,10 @@ const AddSong = () => {
             formData.append('audio',song);
             formData.append('album',album);
 
-            console.log("formData",formData);
+            // console.log("formData",formData);
             
             const response = await axios.post(`${url}/api/song/add`,formData)
-            console.log(response);
+            // console.log(response);
             
             if(response.data.success) {
                 toast.success('Song added successfully');
@@ -43,7 +43,7 @@ const AddSong = () => {
                 toast.error('kuch to gadbar h daya in addsong')
             }
         } catch (error) {
-            console.log(name, desc, image, song, album);
+            // console.log(name, desc, image, song, album);
             
             toast.error('Error in add song admin site')
             console.log(error);
