@@ -63,7 +63,7 @@ const AddSong = () => {
                 toast.error('unable to load albums data')
             }
         } catch (error) {
-            
+            toast.error("error in showing all the desc ")
         }
     }
 

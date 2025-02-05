@@ -1,18 +1,27 @@
-import React, { useCallback, useContext } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import Navbar from './Navbar'
 import { useParams } from 'react-router-dom'
-import { albumsData, assets, songsData } from '../assets/frontend-assets/assets';
+import { assets } from '../assets/frontend-assets/assets';
 import { PlayerContext } from '../context/PlayerContext';
 
-const DisplayAlbum = () => {
+const DisplayAlbum = ({album}) => {
 
     const {id} = useParams();
     // console.log(id);
-    const albumData = albumsData[id];
+    // const albumData = albumsData[id];
+    const [albumData, setAlbumData] = useState("")
     // console.log(albumData);
-    const {playwithId} = useContext(PlayerContext)
+    const {playwithId, albumsData, songsData} = useContext(PlayerContext)
+
+    useEffect( () =>  {
+        albumsData.map((items) => {
+            if(items._id === id){
+                setAlbumData(items);
+            }
+        })
+    },[])
     
-  return (
+  return albumData ? (
     <>
         <Navbar />
         <div className="mt-10 flex gap-8 flex-col md:flex-row md:items-end">
@@ -38,8 +47,8 @@ const DisplayAlbum = () => {
         </div>
         <hr />
         {
-            songsData.map ((items, index) => (
-                <div onClick={() => {playwithId(items.id)}} key={index} className='grid grid-cols-3 sm:grid-cols-4 gap-2 p-2 items-center text-[#a7a7a7] hover:bg-[#ffffff2b] cursor-pointer'>
+            songsData.filter((items) => items.album === album.name).map ((items, index) => (
+                <div onClick={() => {playwithId(items._id)}} key={index} className='grid grid-cols-3 sm:grid-cols-4 gap-2 p-2 items-center text-[#a7a7a7] hover:bg-[#ffffff2b] cursor-pointer'>
                     <p className='text-white'>
                         <b className='mr-4 text-[#a7a7a7]'>{index + 1}</b>
                         <img className='inline w-10 mr-5' src={items.image} alt="" />
@@ -52,7 +61,7 @@ const DisplayAlbum = () => {
             ))
         }
     </>
-  )
+  ) : 'null'
 }
 
 export default DisplayAlbum
