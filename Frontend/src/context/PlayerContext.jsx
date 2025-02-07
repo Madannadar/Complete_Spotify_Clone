@@ -64,20 +64,21 @@ const PlayerContextProvider = (props) => {
         })
         }
     
-    const next = async () => {
-        // if (track.id < songsData.length-1) {
-        //     await setTrack(songsData[track.id+1]);
-        //     await audioRef.current.play()
-        //     setplayStatus(true);
-        // }
-        songsData.map(async (item, index) => {
-            if (track._id === item._id && index < songsData.length) {
-                await setTrack(songsData[index + 1]);
-                await audioRef.current.play();
-                setplayStatus(true);
+        const next = async () => {
+            const currentIndex = songsData.findIndex((item) => item._id === track._id);
+        
+            if (currentIndex === songsData.length - 1) {
+                // If the current track is the last one, play the first song
+                await setTrack(songsData[0]);
+            } else {
+                // Otherwise, play the next song
+                await setTrack(songsData[currentIndex + 1]);
             }
-        })
-    }
+        
+            await audioRef.current.play();
+            setplayStatus(true);
+        };
+        
 
     const seekSong = async (e) => {
         // console.log(e); // nativeEvent.offsetX gives the location on where we click on the seekbar

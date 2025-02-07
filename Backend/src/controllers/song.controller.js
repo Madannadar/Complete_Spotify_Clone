@@ -30,7 +30,7 @@ const addSong = async (req, res) => {
         res.json({success: true, message: "Song added successfully"})//we will get a json response for conformation of upload in mongodb
 
     } catch (err) {
-        res.json({success:false})
+        res.status(401).json({success:false})
         console.log(err);
     }
 }
