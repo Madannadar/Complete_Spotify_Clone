@@ -10,6 +10,7 @@ const AddSong = () => {
     const [song, setSong] = useState(false);
     const [name, setName] = useState("");
     const [desc, setDesc] = useState("");
+    // const [lyric, setLyric] = useState("");
     const [album, setAlbum] = useState('none');
     const [loading, setLoading] = useState(false);
     const [albumData, setAlbumData] = useState([]);
@@ -22,6 +23,7 @@ const AddSong = () => {
 
             formData.append('name',name);
             formData.append('desc',desc);
+            // formData.append('lyric',lyric);
             formData.append('image',image);
             formData.append('audio',song);
             formData.append('album',album);
@@ -35,6 +37,7 @@ const AddSong = () => {
                 toast.success('Song added successfully');
                 setName('');
                 setDesc('');
+                // setLyric('');
                 setAlbum('none');
                 setImage(false);
                 setSong(false);
@@ -104,6 +107,10 @@ const AddSong = () => {
             <p>Song Description</p>
             <input onChange={(e) => setDesc(e.target.value)} value={desc} className='bg-transparent outline-green-600 border-2 border-gray-400 p-2.5 w-[max(40vw,250px)]'placeholder='Type here' type="text"  required/>
         </div>
+        {/* <div className="flex flex-col gap-2.5">
+            <p>Add Lyric</p>
+            <input onChange={(e) => setLyric(e.target.value)} value={lyric} className='bg-transparent outline-green-600 border-2 border-gray-400 p-2.5 w-[max(40vw,250px)]'placeholder='Type here' type="text"  required/>
+        </div> */}
         <div className="flex flex-col gap-2.5">
             <p>Album</p>
             <select onChange={(e) => setAlbum(e.target.value)} defaultValue={album} className='bg-transparent outline-green-600 border-2 border-gray-400 p-2.5 w-[150px]'>
