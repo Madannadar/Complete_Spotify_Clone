@@ -10,7 +10,7 @@ const AddSong = () => {
     const [song, setSong] = useState(false);
     const [name, setName] = useState("");
     const [desc, setDesc] = useState("");
-    // const [lyric, setLyric] = useState("");
+    const [lyrics, setlyrics] = useState("");
     const [album, setAlbum] = useState('none');
     const [loading, setLoading] = useState(false);
     const [albumData, setAlbumData] = useState([]);
@@ -23,12 +23,13 @@ const AddSong = () => {
 
             formData.append('name',name);
             formData.append('desc',desc);
-            // formData.append('lyric',lyric);
+            // formData.append('lyrics',lyrics);
             formData.append('image',image);
+            // console.log("lyrics being sent:", formData.get('lyrics'));
             formData.append('audio',song);
             formData.append('album',album);
 
-            // console.log("formData",formData);
+            console.log("formData",formData);
             
             const response = await axios.post(`${url}/api/song/add`,formData)
             // console.log(response);
@@ -37,7 +38,7 @@ const AddSong = () => {
                 toast.success('Song added successfully');
                 setName('');
                 setDesc('');
-                // setLyric('');
+                // setlyrics('');
                 setAlbum('none');
                 setImage(false);
                 setSong(false);
@@ -108,8 +109,8 @@ const AddSong = () => {
             <input onChange={(e) => setDesc(e.target.value)} value={desc} className='bg-transparent outline-green-600 border-2 border-gray-400 p-2.5 w-[max(40vw,250px)]'placeholder='Type here' type="text"  required/>
         </div>
         {/* <div className="flex flex-col gap-2.5">
-            <p>Add Lyric</p>
-            <input onChange={(e) => setLyric(e.target.value)} value={lyric} className='bg-transparent outline-green-600 border-2 border-gray-400 p-2.5 w-[max(40vw,250px)]'placeholder='Type here' type="text"  required/>
+            <p>Add lyric</p>
+            <input onChange={(e) => setlyrics(e.target.value)} value={lyrics} className='bg-transparent outline-green-600 border-2 border-gray-400 p-2.5 w-[max(40vw,250px)]'placeholder='Type here' type="text"  required/>
         </div> */}
         <div className="flex flex-col gap-2.5">
             <p>Album</p>
