@@ -8,9 +8,9 @@ const PlayerContextProvider = (props) => {
     const audioRef = useRef();
     const seekBg = useRef();
     const seekBar = useRef();
+    const [showLyrics, setShowLyrics] = useState(false);
 
     const url = 'https://spotify-backend-1q7d.onrender.com';
-
 
     const [songsData, setSongData] = useState([]);
     const [albumsData, setAlbumsData] = useState([]);
@@ -62,29 +62,31 @@ const PlayerContextProvider = (props) => {
                 setplayStatus(true);
             }
         })
+    }
+    
+    const next = async () => {
+        const currentIndex = songsData.findIndex((item) => item._id === track._id);
+    
+        if (currentIndex === songsData.length - 1) {
+            // If the current track is the last one, play the first song
+            await setTrack(songsData[0]);
+        } else {
+            // Otherwise, play the next song
+            await setTrack(songsData[currentIndex + 1]);
         }
     
-        const next = async () => {
-            const currentIndex = songsData.findIndex((item) => item._id === track._id);
+        await audioRef.current.play();
+        setplayStatus(true);
+    };
         
-            if (currentIndex === songsData.length - 1) {
-                // If the current track is the last one, play the first song
-                await setTrack(songsData[0]);
-            } else {
-                // Otherwise, play the next song
-                await setTrack(songsData[currentIndex + 1]);
-            }
-        
-            await audioRef.current.play();
-            setplayStatus(true);
-        };
-        
+    const toggleLyrics = () => {
+        setShowLyrics(!showLyrics);
+    };
 
     const seekSong = async (e) => {
         // console.log(e); // nativeEvent.offsetX gives the location on where we click on the seekbar
         audioRef.current.currentTime = ((e.nativeEvent.offsetX / seekBg.current.offsetWidth)*audioRef.current.duration)
         console.log(audioRef.current.currentTime);
-        
     }
 
     const getSongsData = async () => {
@@ -92,9 +94,8 @@ const PlayerContextProvider = (props) => {
             const response = await axios.get(`${url}/api/song/list`);
             setSongData(response.data.songs);
             setTrack(response.data.songs[0]);
-
         } catch (error) {
-            
+            console.error("Error fetching songs:", error);
         }
     }
 
@@ -102,10 +103,8 @@ const PlayerContextProvider = (props) => {
         try {
             const response = await axios.get(`${url}/api/album/list`);
             setAlbumsData(response.data.albums);
-            setTrack(response.data.albums[0]);
-
         } catch (error) {
-            
+            console.error("Error fetching albums:", error);
         }
     }
 
@@ -149,7 +148,9 @@ const PlayerContextProvider = (props) => {
         next,
         seekSong,
         songsData,
-        albumsData
+        albumsData,
+        showLyrics,
+        toggleLyrics
     }
 
     return (

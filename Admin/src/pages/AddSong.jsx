@@ -23,13 +23,14 @@ const AddSong = () => {
 
             formData.append('name',name);
             formData.append('desc',desc);
-            // formData.append('lyrics',lyrics);
+            formData.append('lyrics',lyrics);
             formData.append('image',image);
             // console.log("lyrics being sent:", formData.get('lyrics'));
             formData.append('audio',song);
             formData.append('album',album);
 
-            console.log("formData",formData);
+            const jsonData = JSON.stringify(Object.fromEntries(formData.entries()));
+            console.log("FormData JSON:", jsonData);
             
             const response = await axios.post(`${url}/api/song/add`,formData)
             // console.log(response);
@@ -38,7 +39,7 @@ const AddSong = () => {
                 toast.success('Song added successfully');
                 setName('');
                 setDesc('');
-                // setlyrics('');
+                setlyrics('');
                 setAlbum('none');
                 setImage(false);
                 setSong(false);
@@ -108,10 +109,10 @@ const AddSong = () => {
             <p>Song Description</p>
             <input onChange={(e) => setDesc(e.target.value)} value={desc} className='bg-transparent outline-green-600 border-2 border-gray-400 p-2.5 w-[max(40vw,250px)]'placeholder='Type here' type="text"  required/>
         </div>
-        {/* <div className="flex flex-col gap-2.5">
+         <div className="flex flex-col gap-2.5">
             <p>Add lyric</p>
             <input onChange={(e) => setlyrics(e.target.value)} value={lyrics} className='bg-transparent outline-green-600 border-2 border-gray-400 p-2.5 w-[max(40vw,250px)]'placeholder='Type here' type="text"  required/>
-        </div> */}
+        </div> 
         <div className="flex flex-col gap-2.5">
             <p>Album</p>
             <select onChange={(e) => setAlbum(e.target.value)} defaultValue={album} className='bg-transparent outline-green-600 border-2 border-gray-400 p-2.5 w-[150px]'>

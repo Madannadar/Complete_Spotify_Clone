@@ -21,10 +21,10 @@ const songSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    // lyrics: {
-    //     type: String,
-    //     required: true,
-    // },
+    lyrics: {
+        type: String,
+        required: true,
+    },
     duration: {
         type: String,
         required: true,

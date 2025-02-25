@@ -7,7 +7,7 @@ const addSong = async (req, res) => {
         const name = req.body.name;
         const desc = req.body.desc;
         const album = req.body.album;
-        // const lyrics = req.body.lyrics;
+        const lyrics = req.body.lyrics;
         // const audioFile = req.files.audio[0];
         const audioFile = req.files?.audio[0]?.path
         const imageFile = req.files?.image[0]?.path
@@ -25,7 +25,7 @@ const addSong = async (req, res) => {
             image:imageUpload.secure_url,
             file: audioUpload.secure_url,
             duration,
-            // lyrics
+            lyrics
         }
         const song = songModel(songData) // the songData will go to songModel and the response will be stored in song
         await song.save(); // then with the save method the data in song will be saved in database
