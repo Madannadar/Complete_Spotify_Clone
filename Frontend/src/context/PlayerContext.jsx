@@ -8,7 +8,8 @@ const PlayerContextProvider = (props) => {
     const audioRef = useRef();
     const seekBg = useRef();
     const seekBar = useRef();
-    const [showLyrics, setShowLyrics] = useState(false);
+    const [showLyrics, setShowLyrics] = useState(false); 
+    const [volume, setVolume] = useState(1); // Volume state (0 to 1)
 
     const url = 'https://spotify-backend-1q7d.onrender.com';
 
@@ -108,6 +109,44 @@ const PlayerContextProvider = (props) => {
         }
     }
 
+    const increaseVolume = () => {
+        const newVolume = Math.min(volume + 0.1, 1); // Increase volume by 0.1, max 1
+        setVolume(newVolume);
+        audioRef.current.volume = newVolume;
+    };
+
+    const decreaseVolume = () => {
+        const newVolume = Math.max(volume - 0.1, 0); // Decrease volume by 0.1, min 0
+        setVolume(newVolume);
+        audioRef.current.volume = newVolume;
+    };
+
+    const toggleMute = () => {
+        if (volume > 0) {
+            setVolume(0); // Mute
+            audioRef.current.volume = 0;
+        } else {
+            setVolume(1); // Unmute
+            audioRef.current.volume = 1;
+        }
+    };
+
+    const toggleRepeat = () => {
+        const modes = ['no-repeat', 'repeat-one', 'repeat-all'];
+        const currentIndex = modes.indexOf(repeatMode);
+        const nextIndex = (currentIndex + 1) % modes.length;
+        setRepeatMode(modes[nextIndex]);
+    };
+
+    const handleSongEnd = () => {
+        if (repeatMode === 'repeat-one') {
+            audioRef.current.currentTime = 0; // Restart the same song
+            audioRef.current.play();
+        } else if (repeatMode === 'repeat-all') {
+            next(); // Play the next song
+        }
+    };
+
     useEffect(() => {
         setTimeout(() => {
             audioRef.current.ontimeupdate = () => {
@@ -150,7 +189,11 @@ const PlayerContextProvider = (props) => {
         songsData,
         albumsData,
         showLyrics,
-        toggleLyrics
+        toggleLyrics,
+        volume,
+        increaseVolume,
+        decreaseVolume,
+        toggleMute,
     }
 
     return (
