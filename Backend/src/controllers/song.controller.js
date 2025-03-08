@@ -4,38 +4,35 @@ import { uploadOnCloudinary } from "../config/cloudinary.js";
 
 const addSong = async (req, res) => {
     try {
-        const name = req.body.name;
-        const desc = req.body.desc;
-        const album = req.body.album;
-        const lyrics = req.body.lyrics;
-        // const audioFile = req.files.audio[0];
-        const audioFile = req.files?.audio[0]?.path
-        const imageFile = req.files?.image[0]?.path
-        console.log("imageFile for song",imageFile);
-        
-        // const imageFile = req.files.image[0];
-        const audioUpload = await uploadOnCloudinary(audioFile)
-        const imageUpload = await uploadOnCloudinary(imageFile)
-        console.log("name",name,"desc", desc, "album",album, "audioUpload",audioUpload, "imageUpload",imageUpload);
-        const duration = `${Math.floor(audioUpload.duration / 60)}: ${Math.floor(audioUpload.duration % 60)}` // get duration in miniutes then secends
-        const songData = { // this is same to the model created so this will fill in the table of mongooes perfectly
+        const { name, desc, album, lyrics } = req.body; // Extract lyrics from request body
+        const audioFile = req.files?.audio[0]?.path;
+        const imageFile = req.files?.image[0]?.path;
+
+        console.log("Received lyrics:", lyrics); // Debugging: Log the received lyrics
+
+        const audioUpload = await uploadOnCloudinary(audioFile);
+        const imageUpload = await uploadOnCloudinary(imageFile);
+
+        const duration = `${Math.floor(audioUpload.duration / 60)}:${Math.floor(audioUpload.duration % 60)}`;
+
+        const songData = {
             name,
             desc,
             album,
-            image:imageUpload.secure_url,
+            image: imageUpload.secure_url,
             file: audioUpload.secure_url,
             duration,
-            lyrics
-        }
-        const song = songModel(songData) // the songData will go to songModel and the response will be stored in song
-        await song.save(); // then with the save method the data in song will be saved in database
-        res.json({success: true, message: "Song added successfully"})//we will get a json response for conformation of upload in mongodb
+            lyrics, // Include lyrics in the song data
+        };
 
+        const song = songModel(songData);
+        await song.save();
+        res.json({ success: true, message: "Song added successfully" });
     } catch (err) {
-        res.status(401).json({success:false})
-        console.log(err);
+        res.status(401).json({ success: false });
+        console.error(err);
     }
-}
+};
 
 const listSong = async (req, res) => {
     try {

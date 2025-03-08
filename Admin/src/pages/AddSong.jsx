@@ -20,22 +20,26 @@ const AddSong = () => {
         setLoading(true);
         try {
             const formData = new FormData();
-
-            formData.append('name',name);
-            formData.append('desc',desc);
-            formData.append('lyrics',lyrics);
-            formData.append('image',image);
-            // console.log("lyrics being sent:", formData.get('lyrics'));
-            formData.append('audio',song);
-            formData.append('album',album);
-
-            const jsonData = JSON.stringify(Object.fromEntries(formData.entries()));
-            console.log("FormData JSON:", jsonData);
-            
-            const response = await axios.post(`${url}/api/song/add`,formData)
-            // console.log(response);
-            
-            if(response.data.success) {
+    
+            formData.append('name', name);
+            formData.append('desc', desc);
+            formData.append('lyrics', lyrics); // Lyrics field
+            formData.append('image', image);
+            formData.append('audio', song);
+            formData.append('album', album);
+    
+            // Debugging: Log the form data
+            for (let [key, value] of formData.entries()) {
+                console.log(key, value);
+            }
+    
+            const response = await axios.post(`${url}/api/song/add`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data', // Ensure proper content type
+                },
+            });
+    
+            if (response.data.success) {
                 toast.success('Song added successfully');
                 setName('');
                 setDesc('');
@@ -43,19 +47,15 @@ const AddSong = () => {
                 setAlbum('none');
                 setImage(false);
                 setSong(false);
-            }
-            else{
-                toast.error('kuch to gadbar h daya in addsong')
+            } else {
+                toast.error('Something went wrong in addSong');
             }
         } catch (error) {
-            // console.log(name, desc, image, song, album);
-            
-            toast.error('Error in add song admin site')
-            console.log(error);
-            
+            toast.error('Error in add song admin site');
+            console.error(error);
         }
-        setLoading(false)
-    }
+        setLoading(false);
+    };
 
     const loadAlbumData = async () => {
         try {
