@@ -17,6 +17,8 @@ const Player = () => {
         volume,
         handleVolumeChange,
         toggleMute,
+        showLyrics,
+        toggleLyrics,
     } = useContext(PlayerContext);
 
     return track ? (
@@ -54,7 +56,12 @@ const Player = () => {
             {/* Right Section - Volume Controls (Hidden on Mobile by Default) */}
             <div className="hidden lg:flex items-center gap-2 opacity-75">
                 <img className="w-4" src={assets.plays_icon} alt="" />
-                <img className="w-4" src={assets.mic_icon} alt="" />
+                <img
+                    onClick={toggleLyrics}
+                    className="w-4 cursor-pointer"
+                    src={assets.mic_icon}
+                    alt="Lyrics"
+                />
                 <img className="w-4" src={assets.queue_icon} alt="" />
                 <img className="w-4" src={assets.speaker_icon} alt="" />
                 <div className="flex items-center gap-2">
@@ -104,6 +111,24 @@ const Player = () => {
                     />
                 </div>
             </div>
+
+            {/* Lyrics Display */}
+            {showLyrics && (
+                <div className="fixed inset-0 bg-black bg-opacity-90 flex flex-col justify-start items-center z-50 pt-20">
+                    <div className="bg-black p-6 rounded-lg w-[95%] h-[80vh] text-white">
+                        <h2 className="text-3xl font-bold mb-6 text-center">Lyrics</h2>
+                        <div className="h-[60vh] overflow-y-auto text-2xl">
+                            <p className="whitespace-pre-line text-center">{track.lyrics}</p>
+                        </div>
+                        <button
+                            onClick={toggleLyrics}
+                            className="mt-6 bg-green-600 text-white px-6 py-3 rounded text-lg block mx-auto"
+                        >
+                            Close
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     ) : null;
 };

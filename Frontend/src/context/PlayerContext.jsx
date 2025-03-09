@@ -146,6 +146,7 @@ const PlayerContextProvider = (props) => {
             next(); // Play the next song
         }
     };
+    
 
     useEffect(() => {
         setTimeout(() => {
@@ -194,6 +195,8 @@ const PlayerContextProvider = (props) => {
         increaseVolume,
         decreaseVolume,
         toggleMute,
+        showLyrics,
+        toggleLyrics,
     }
 
     return (
