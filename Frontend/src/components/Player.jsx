@@ -15,10 +15,11 @@ const Player = () => {
         next,
         seekSong,
         volume,
-        handleVolumeChange,
         toggleMute,
         showLyrics,
         toggleLyrics,
+        repeatMode,
+        toggleRepeat,
     } = useContext(PlayerContext);
 
     return track ? (
@@ -55,7 +56,7 @@ const Player = () => {
                 />
             </div>
 
-            {/* Larger Screen View - No Changes */}
+            {/* Larger Screen View - Left Side: Song Image and Name */}
             <div className="hidden lg:flex items-center gap-4">
                 <img className='w-12' src={track.image} alt={track.name} />
                 <div>
@@ -64,7 +65,7 @@ const Player = () => {
                 </div>
             </div>
 
-            {/* Larger Screen View - Playback Controls */}
+            {/* Larger Screen View - Center: Playback Controls */}
             <div className="hidden lg:flex flex-col items-center justify-center">
                 <div className="flex gap-4">
                     <img className="w-4 cursor-pointer" src={assets.shuffle_icon} alt="Shuffle" />
@@ -74,7 +75,12 @@ const Player = () => {
                         : <img onClick={play} className="w-4 cursor-pointer" src={assets.play_icon} alt="Play" />
                     }
                     <img onClick={next} className="w-4 cursor-pointer" src={assets.next_icon} alt="Next" />
-                    <img className="w-4 cursor-pointer" src={assets.loop_icon} alt="Loop" />
+                    <img 
+                        onClick={toggleRepeat} 
+                        className="w-4 cursor-pointer" 
+                        src={repeatMode === 'repeat-one' ? assets.repeat_one_icon : assets.loop_icon} 
+                        alt="Repeat" 
+                    />
                 </div>
                 <div className="hidden md:flex items-center gap-5 w-full mt-1">
                     <p>{time.currentTime.minute}:{time.currentTime.second}</p>
@@ -89,7 +95,7 @@ const Player = () => {
                 </div>
             </div>
 
-            {/* Larger Screen View - Volume Controls */}
+            {/* Larger Screen View - Right Side: Volume Controls */}
             <div className="hidden lg:flex items-center gap-2 opacity-75">
                 <img className="w-4" src={assets.plays_icon} alt="Plays" />
                 <img
